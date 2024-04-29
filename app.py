@@ -132,11 +132,9 @@ def login():
 
                 return redirect('/')
             else:
-                flash('Неверные логин или пароль', 'error')
-                return redirect('/login')   
+                flash('Неверные логин или пароль', 'error')   
         else:
             flash('Пожалуйста, введите логин и пароль', 'error')
-            return redirect('/login')
     return render_template('login.html')
 
 
