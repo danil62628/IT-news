@@ -55,21 +55,23 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     article = relationship("Article", back_populates="comments")
 
-
 # Главная страница
 @app.route('/')
 def index():
-    articles = Article.query.all()
-    comments = db.session.query(Comment, User).join(User).all()    # Получаем все комментарии с информацией о пользователе
-    return render_template('index.html', articles=articles, comments=comments)
+    if 'user_id' not in session:
+        return redirect('/login')  # Перенаправляем на страницу авторизации, если пользователь не авторизован
+    else:
+        articles = Article.query.all()
+        comments = db.session.query(Comment, User).join(User).all()    # Получаем все комментарии с информацией о пользователе
+        return render_template('index.html', articles=articles, comments=comments)
 
         
 # Регистрация
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+        username = request.form['username']
+        password = request.form['password']
         
         # Проверка, заполнены ли все поля
         if not username or not password:
@@ -109,32 +111,28 @@ def register():
 # Авторизация
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if 'user_id' in session:
-        return redirect('/')# Перенаправление на главную страницу, если пользователь уже авторизован
-
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-
-        if username and password:
+        username = request.form['username']
+        password = request.form['password']
+    
         # Поиск пользователя в базе данных
-            user = User.query.filter_by(username=username).first()
-            if user and check_password_hash(user.password, password):
-                session['username'] = username
-                session['user_id'] = user.id
-                session.permanent = True
-                flash('Вы успешно вошли', 'success')
+        user = User.query.filter_by(username=username).first()
+        if user and check_password_hash(user.password, password):
+            session['username'] = username
+            session['user_id'] = user.id
+            session.permanent = True
+            flash('Вы успешно вошли', 'success')
 
             # Очистка flash-сообщений, только если успешный вход
-                flash_messages = list(get_flashed_messages())
-                flash_messages.clear()
-                app.view_functions[request.endpoint].clear_flash = True
+            flash_messages = list(get_flashed_messages())
+            flash_messages.clear()
+            app.view_functions[request.endpoint].clear_flash = True
 
-                return redirect('/')
-            else:
-                flash('Неверные логин или пароль', 'error')   
+            return redirect('/')
         else:
-            flash('Пожалуйста, введите логин и пароль', 'error')
+            flash('Неверные логин или пароль', 'error')
+            return redirect('/login')   
+    
     return render_template('login.html')
 
 
@@ -164,5 +162,3 @@ def logout():
      # Удаляем user_id из сессии при выходе
     session.pop('user_id', None)
     return redirect('/login')
-
-
