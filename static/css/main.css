@@ -1,0 +1,198 @@
+
+/* Общие стили для страницы новостей */
+html{
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+body {
+  background: linear-gradient(90deg,
+  rgb(240, 218, 253) 18%,
+  rgb(151, 222, 224) 67%) !important;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  margin-top: 90px;
+  }
+  
+header {
+position:fixed;
+top: 0;
+left: 0;
+width: 100%;
+background-color: #3498db;
+text-align: center;
+z-index: 999;
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+gap: 10px;
+align-items: center;
+}
+
+header nav {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+
+}
+
+header nav a {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  
+}
+
+header nav a:hover {
+  background-color: #ffb6fb;
+}
+
+.icon {
+  height: 50px;
+  margin-left: 30px;
+}
+  
+.logo h1 {
+  margin: 0;
+  font-size: 24px;
+  text-align: center;
+}
+  
+.logout-btn {
+  padding: 10px 30px;
+  border: none;
+  background-color: transparent;
+  color: white;
+}
+  
+ /* Всплывающее меню */
+ .menu{
+  position: relative;
+  list-style-type: none;
+ }
+ .submenu{
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 10px;/* Добавляем отступы */
+  background: #fff; /* Задаем белый фон */
+  color: black;
+  z-index: 998;
+  list-style-type: none;
+  border-radius: 5px;
+}
+.dropdown-item:hover{
+  background-color: #007bff;
+  color: #fff;
+ }
+
+.menu:hover .submenu {
+  top: 100%;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.main{
+  display: inline-block;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.main:hover{
+  background-color: #007bff;
+  color: #fff;
+}
+
+  /* Styles for news articles */
+.wrapper{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+  gap: 30px;
+  
+}
+
+  .article { 
+  width: 100%; /* Занимаем всю доступную ширину */
+  border: 1px solid #666;
+  padding: 10px;
+  border-radius: 16px;
+  background: rgb(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(2.8px);
+
+} 
+  
+  .article h3 { 
+    margin-top: 0; 
+    font-size: 1.5em; /* Используем em для размера шрифта */
+  } 
+  
+  .article p { 
+    margin-top: 0; 
+    color: #666; 
+    margin-bottom: 10px;
+  }
+  .comment {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    margin-top: 10px;
+    word-wrap: break-word; /* Для поддержки старых браузеров */
+    overflow-wrap: break-word; /* Альтернативное свойство для поддержки новых браузеров */
+}
+.comment .user-login {
+  font-weight: bold;
+  color: #3498db;
+}
+
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #666;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  resize: vertical; max-height: 60px; min-height: 35px;
+  background: rgb(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(2.8px);
+  }
+
+textarea:focus {
+  border-color: #3498db; /* Изменяем цвет рамки при фокусировке */
+  box-shadow: 0 0 5px #3498db; /* Добавляем тень для подсветки */
+  outline: none; /* Убираем стандартное выделение */
+  }
+
+.submit{
+  border: none;
+  border-radius: 30px;
+  font-size: 15px;
+  height: 45px;
+  outline: none;
+  width: 35%;
+  background: #3498db;
+  cursor: pointer;
+  transition: .3s;
+  color: #ffffff; 
+  }
+.submit:hover{
+  box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
+  }
+
+.images {
+  width: 70%;
+  height: 40%;
+  margin-bottom: 10px;
+  margin-left: 15%;
+}
+
+
+
+
+

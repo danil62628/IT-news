@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Авторизация</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/css.css">
+</head>
+<body>
+
+    <div class="box">
+        <div class="container">
+            <img class="icon" src="{{url_for('static', filename='img/icon.png') }}" > 
+            <div class="top-header">
+                <span>Новости | IT</span>
+                <header>Авторизация</header>
+            </div>
+    
+            <div class="input-field">
+                <form method="POST" action="/login">
+                    <input type="text" class="input" id="username" name="username" placeholder="Логин" required><br><br>
+                    <input type="password" class="input" id="password" name="password" placeholder="Пароль" required><br><br>
+                    <input type="submit"  class="submit" value="Войти">
+                </form>
+     
+            </div>
+    
+            <div class="bottom">
+                <div class="left">
+                    <label><a href="/register">Еще не зарегистрированы?</a></label>
+                </div>
+
+              
+            </div>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+           <ul class="flashes">
+           {% for message in messages %}
+           <li>{{ message }}</li>
+            {% endfor %}
+           </ul>
+            {% endif %}
+           {% endwith %} 
+        </div>
+    </div> 
+
+
+   <!-- <div class="container">
+    <div class="background-image"></div>
+    <img class="icon" src="{{url_for('static', filename='img/icon.png') }}" >
+    <div class="form-container">
+    <h1>Авторизация</h1>
+    <form method="POST" action="/login">
+        <input type="text" id="username" name="username" placeholder="Логин">
+        <input type="password" id="password" name="password" placeholder="Пароль">
+        <input type="submit" value="Войти">
+    </form>
+
+   {% with messages = get_flashed_messages() %}
+        {% if messages %}
+    <ul class="flashes">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+        {% endif %}
+    {% endwith %}  
+    
+    <a href="/register">Еще не зарегистрированы?</a>
+    </div>
+</div> -->
+
+
+</body>
+</html>
+
+
