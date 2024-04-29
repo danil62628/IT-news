@@ -113,9 +113,10 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-    
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+    if username and password:
         # Поиск пользователя в базе данных
         user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
