@@ -71,8 +71,8 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username')
+        password = request.form.get('password')
         
         # Проверка, заполнены ли все поля
         if not username or not password:
@@ -115,26 +115,28 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        
-    if username and password:
+
+        if username and password:
         # Поиск пользователя в базе данных
-        user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password, password):
-            session['username'] = username
-            session['user_id'] = user.id
-            session.permanent = True
-            flash('Вы успешно вошли', 'success')
+            user = User.query.filter_by(username=username).first()
+            if user and check_password_hash(user.password, password):
+                session['username'] = username
+                session['user_id'] = user.id
+                session.permanent = True
+                flash('Вы успешно вошли', 'success')
 
             # Очистка flash-сообщений, только если успешный вход
-            flash_messages = list(get_flashed_messages())
-            flash_messages.clear()
-            app.view_functions[request.endpoint].clear_flash = True
+                flash_messages = list(get_flashed_messages())
+                flash_messages.clear()
+                app.view_functions[request.endpoint].clear_flash = True
 
-            return redirect('/')
+                return redirect('/')
+            else:
+                flash('Неверные логин или пароль', 'error')
+                return redirect('/login')   
         else:
-            flash('Неверные логин или пароль', 'error')
-            return redirect('/login')   
-    
+            flash('Пожалуйста, введите логин и пароль', 'error')
+            return redirect('/login')
     return render_template('login.html')
 
 
