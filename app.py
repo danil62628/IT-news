@@ -59,12 +59,9 @@ class Comment(db.Model):
 # Главная страница
 @app.route('/')
 def index():
-    if 'user_id' not in session:
-        return redirect('/login')  # Перенаправляем на страницу авторизации, если пользователь не авторизован
-    else:
-        articles = Article.query.all()
-        comments = db.session.query(Comment, User).join(User).all()    # Получаем все комментарии с информацией о пользователе
-        return render_template('index.html', articles=articles, comments=comments)
+    articles = Article.query.all()
+    comments = db.session.query(Comment, User).join(User).all()    # Получаем все комментарии с информацией о пользователе
+    return render_template('index.html', articles=articles, comments=comments)
 
         
 # Регистрация
@@ -112,6 +109,9 @@ def register():
 # Авторизация
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if 'user_id' in session:
+        return redirect('/')# Перенаправление на главную страницу, если пользователь уже авторизован
+
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
