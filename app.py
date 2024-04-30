@@ -10,7 +10,8 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 
  # Установка параметров базы данных
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://it_news_database_user:RFTQ4IOg4AdyRnX3JLXAAfOy0SNxhBru@dpg-conr7nsf7o1s73fqccjg-a.oregon-postgres.render.com/it_news_database'
 #postgres://it_news_database_user:RFTQ4IOg4AdyRnX3JLXAAfOy0SNxhBru@dpg-conr7nsf7o1s73fqccjg-a.oregon-postgres.render.com/it_news_database
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -20,15 +21,14 @@ if __name__ == '__main__':
     app.run()
 
 class User(db.Model):
-    __tablename__ = 'user'
-
+   # __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), unique=True, nullable=False)
 
 def __init__(self, username, password):
         self.username = username
-        self.password = password
+        self.set_password(password)
 
 def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -38,8 +38,7 @@ def check_password(self, password):
 
 
 class Article(db.Model):
-    __tablename__ = 'article'
-
+    #__tablename__ = 'article'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
@@ -47,8 +46,7 @@ class Article(db.Model):
     comments = relationship("Comment", back_populates="article")
 
 class Comment(db.Model):
-    __tablename__ = 'comment'
-
+    #__tablename__ = 'comment'
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(100), nullable=False)
     article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
