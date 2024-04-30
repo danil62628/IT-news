@@ -13,6 +13,8 @@ app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://it_news_database_user:RFTQ4IOg4AdyRnX3JLXAAfOy0SNxhBru@dpg-conr7nsf7o1s73fqccjg-a.oregon-postgres.render.com/it_news_database'
 #postgres://it_news_database_user:RFTQ4IOg4AdyRnX3JLXAAfOy0SNxhBru@dpg-conr7nsf7o1s73fqccjg-a.oregon-postgres.render.com/it_news_database
+app.secret_key = os.urandom(24)  # Генерация секретного ключа
+app.config['SESSION_TYPE'] = 'filesystem'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
    
