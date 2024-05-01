@@ -8,7 +8,7 @@ from flask_migrate import Migrate
 
 
 app = Flask(__name__)
-
+app.debug = True
  # Установка параметров базы данных
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://it_news_database_user:RFTQ4IOg4AdyRnX3JLXAAfOy0SNxhBru@dpg-conr7nsf7o1s73fqccjg-a.oregon-postgres.render.com/it_news_database'
@@ -20,13 +20,13 @@ migrate = Migrate(app, db)
    
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', debug=True)
 
 class User(db.Model):
    # __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(100), unique=True, nullable=False)
+    username = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(255), unique=True, nullable=False)
 
 def __init__(self, username, password):
         self.username = username
@@ -101,6 +101,8 @@ def register():
         new_user = User(username=username, password=generate_password_hash(password))
         db.session.add(new_user)
         db.session.commit()
+        session['user_id'] = new_user.id
+
         
         flash('Вы успешно зарегистрированы', 'success')
         return redirect('/login')
