@@ -1,5 +1,4 @@
 import os
-
 from flask import Flask, render_template, request, redirect, session, flash, get_flashed_messages
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
@@ -10,9 +9,7 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 app.debug = True
  # Установка параметров базы данных
-#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://it_news_database_user:RFTQ4IOg4AdyRnX3JLXAAfOy0SNxhBru@dpg-conr7nsf7o1s73fqccjg-a.oregon-postgres.render.com/it_news_database'
-#postgres://it_news_database_user:RFTQ4IOg4AdyRnX3JLXAAfOy0SNxhBru@dpg-conr7nsf7o1s73fqccjg-a.oregon-postgres.render.com/it_news_database
 app.secret_key = os.urandom(24)  # Генерация секретного ключа
 app.config['SESSION_TYPE'] = 'filesystem'
 db = SQLAlchemy(app)
@@ -23,7 +20,6 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
 
 class User(db.Model):
-   # __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=True, nullable=False)
@@ -40,7 +36,6 @@ def check_password(self, password):
 
 
 class Article(db.Model):
-    #__tablename__ = 'article'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
@@ -48,7 +43,6 @@ class Article(db.Model):
     comments = relationship("Comment", back_populates="article")
 
 class Comment(db.Model):
-    #__tablename__ = 'comment'
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(100), nullable=False)
     article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
@@ -65,7 +59,21 @@ def index():
         comments = db.session.query(Comment, User).join(User).all()    # Получаем все комментарии с информацией о пользователе
         return render_template('index.html', articles=articles, comments=comments)
 
-        
+
+# Cтатьи
+def get_comments(article_id):
+    comments = db.session.query(Comment).filter_by(article_id=article_id).all()
+    return comments
+def get_article(article_id):
+    article = db.session.query(Article).get(article_id)
+    return article
+@app.route("/article/<int:article_id>")
+def article(article_id):
+    article = get_article(article_id)  # Получение статьи по ID
+    comments = get_comments(article_id)  # Получение комментариев для данной статьи
+    return render_template("article.html", article=article, comments=comments)
+
+
 # Регистрация
 @app.route('/register', methods=['GET', 'POST'])
 def register():
