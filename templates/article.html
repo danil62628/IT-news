@@ -9,17 +9,12 @@
 
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-           <img class="icon" src="{{url_for('static', filename='img/icon.png') }}" >
-  
+            <img class="icon" src="{{url_for('static', filename='img/icon.png') }}" alt="Иконка" >
+            
           <ul class="menu">
-            <li>
-              <button class="main">Статьи</button>
-              <ul class="submenu">
-                {% for article in articles %}
-                <li><a class="dropdown-item" href="#article-{{ article.id }}">{{ article.title }}</a></li>
-                {% endfor %}
-              </ul>
-            </li>
+            <a href="{{ url_for('index') }}">
+            <button class="main">Главная</button>
+            </a>
           </ul>
   
           <button type="exit" class="logout-btn"onclick="location.href='/login'">&times;</button>

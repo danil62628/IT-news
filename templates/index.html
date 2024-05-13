@@ -39,7 +39,7 @@
         <h2>{{ article.title }}</h2>
         <p>{{ article.content[:200] }}...</p>
         <img class="images" src="{{ article.image_url }}" alt="{{ article.title }}">
-        <a href="/article/{{ article.id }}">Читать далее</a>
+        <a class="read" href="/article/{{ article.id }}">Читать далее</a>
       </article>
       </div>
       </div> 

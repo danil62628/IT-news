@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, session, flash, get_flashed_messages
+from flask import Flask, render_template, request, redirect, session, flash, get_flashed_messages, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
@@ -61,17 +61,18 @@ def index():
 
 
 # Cтатьи
-#def get_comments(article_id):
-#    comments = db.session.query(Comment).filter_by(article_id=article_id).all()
-#    return comments
+
 def get_article(article_id):
     article = db.session.query(Article).get(article_id)
     return article
 @app.route("/article/<int:article_id>")
 def article(article_id):
-    article = get_article(article_id)  # Получение статьи по ID
-    comments = db.session.query(Comment, User).join(User).all()  # Получение комментариев для данной статьи
-    return render_template("article.html", article=article, comments=comments)
+    if 'user_id' not in session:
+        return redirect('/login')  # Перенаправляем на страницу авторизации, если пользователь не авторизован
+    else:
+        article = get_article(article_id)  # Получение статьи по ID
+        comments = db.session.query(Comment, User).join(User).all()  # Получение комментариев для данной статьи
+        return render_template("article.html", article=article, comments=comments)
 
 
 # Регистрация
@@ -162,7 +163,8 @@ def add_comment(article_id):
            db.session.commit()
            db.session.close()
         
-       return redirect('/')
+       #return redirect('/article/<int:article_id>')
+       return redirect(url_for('article', article_id=article_id))
 
 
 
