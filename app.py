@@ -61,16 +61,16 @@ def index():
 
 
 # Cтатьи
-def get_comments(article_id):
-    comments = db.session.query(Comment).filter_by(article_id=article_id).all()
-    return comments
+#def get_comments(article_id):
+#    comments = db.session.query(Comment).filter_by(article_id=article_id).all()
+#    return comments
 def get_article(article_id):
     article = db.session.query(Article).get(article_id)
     return article
 @app.route("/article/<int:article_id>")
 def article(article_id):
     article = get_article(article_id)  # Получение статьи по ID
-    comments = get_comments(article_id)  # Получение комментариев для данной статьи
+    comments = db.session.query(Comment, User).join(User).all()  # Получение комментариев для данной статьи
     return render_template("article.html", article=article, comments=comments)
 
 

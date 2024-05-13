@@ -11,7 +11,7 @@
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
            <img class="icon" src="{{url_for('static', filename='img/icon.png') }}" >
   
-         <!-- <ul class="menu">
+          <ul class="menu">
             <li>
               <button class="main">Статьи</button>
               <ul class="submenu">
@@ -20,7 +20,7 @@
                 {% endfor %}
               </ul>
             </li>
-          </ul> -->
+          </ul>
   
           <button type="exit" class="logout-btn"onclick="location.href='/login'">&times;</button>
     </header>
@@ -28,34 +28,33 @@
 
 <body>
     <div class="container">
-
         <div class="wrapper">
            <!-- Вывод статей -->
           <div class="col-md-12">
-          <div class="article">
-          <article id="article-{{ article.id }}">
-            <h2>{{ article.title }}</h2>
-            <p>{{ article.content }}</p>
-            <img class="images" src="{{ article.image_url }}" alt="{{ article.title }}">
-          </article>
-          <div class="article-comment">
-            <!-- Форма для добавления нового комментария -->
-            <form action="{{ url_for('add_comment', article_id=article.id) }}" method="post">
-              <textarea name="content" rows="4" cols="50"></textarea>
-              <button type="submit" class="submit">Добавить комментарий</button>
-          </form>
-          <!-- Вывод комментариев для данной статьи -->
-            {% for comment, user in comments %}
-              {% if comment.article_id == article.id %}
-                <li class="comment">
-                  <span class="user-login">{{ user.username }}:</span>
-                  {{ comment.content }}</li>
-              {% endif %}
-            {% endfor %}
-          </div>
-          </div>    
+            <div class="article">
+                <article id="article-{{ article.id }}">
+                    <h2>{{ article.title }}</h2>
+                    <p>{{ article.content }}</p>
+                    <img class="images" src="{{ article.image_url }}" alt="{{ article.title }}">
+                </article>
+                <div class="article-comment">
+                <!-- Форма для добавления нового комментария -->
+                     <form action="{{ url_for('add_comment', article_id=article.id) }}" method="post">
+                        <textarea name="content" rows="4" cols="50"></textarea>
+                        <button type="submit" class="submit">Добавить комментарий</button>
+                     </form>
+                    <!-- Вывод комментариев для данной статьи -->
+                    {% for comment, user in comments %}
+                        {% if comment.article_id == article.id %}
+                             <li class="comment">
+                                 <span class="user-login">{{ user.username }}:</span>
+                                  {{ comment.content }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>    
           </div>
         </div>
-      </div>
+    </div>
 </body>
 </html>
