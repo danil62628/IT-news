@@ -7,7 +7,6 @@ from flask_migrate import Migrate
 
 
 app = Flask(__name__)
-app.debug = True
  # Установка параметров базы данных
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://it_news_database_user:RFTQ4IOg4AdyRnX3JLXAAfOy0SNxhBru@dpg-conr7nsf7o1s73fqccjg-a.oregon-postgres.render.com/it_news_database'
 app.secret_key = os.urandom(24)  # Генерация секретного ключа
@@ -17,13 +16,12 @@ migrate = Migrate(app, db)
    
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0')
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=True, nullable=False)
-    comments = relationship("Comment", back_populates="user", cascade="all, delete-orphan")
 
 def __init__(self, username, password):
         self.username = username
@@ -41,15 +39,14 @@ class Article(db.Model):
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
     image_url = db.Column(db.String(255))
-    comments = relationship("Comment", back_populates="article", cascade="all, delete-orphan")
+    comments = relationship("Comment", back_populates="article")
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(100), nullable=False)
     article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    article = relationship("Article", back_populates="comments",  cascade="all, delete-orphan")
-    user = relationship("User", back_populates="comments",  cascade="all, delete-orphan")
+    article = relationship("Article", back_populates="comments")
 
 # Главная страница
 @app.route('/')
