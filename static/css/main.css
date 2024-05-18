@@ -108,7 +108,7 @@ header nav a:hover {
   color: #fff;
 }
 
-  /* Styles for news articles */
+  /* Стили для статей */
 .wrapper{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
@@ -117,7 +117,7 @@ header nav a:hover {
 }
 
   .article { 
-  width: 100%; /* Занимаем всю доступную ширину */
+  width: 100%;
   border: 1px solid #666;
   padding: 10px;
   border-radius: 16px;
@@ -131,7 +131,7 @@ header nav a:hover {
   
   .article h3 { 
     margin-top: 0; 
-    font-size: 1.5em; /* Используем em для размера шрифта */
+    font-size: 1.5em;
   } 
   
   .article p { 
@@ -143,8 +143,8 @@ header nav a:hover {
     border-top: 1px solid #ccc;
     padding-top: 10px;
     margin-top: 10px;
-    word-wrap: break-word; /* Для поддержки старых браузеров */
-    overflow-wrap: break-word; /* Альтернативное свойство для поддержки новых браузеров */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .comment .user-login {
   font-weight: bold;
@@ -166,9 +166,9 @@ textarea {
   }
 
 textarea:focus {
-  border-color: #3498db; /* Изменяем цвет рамки при фокусировке */
-  box-shadow: 0 0 5px #3498db; /* Добавляем тень для подсветки */
-  outline: none; /* Убираем стандартное выделение */
+  border-color: #3498db; 
+  box-shadow: 0 0 5px #3498db; 
+  outline: none;
   }
 
 .submit{

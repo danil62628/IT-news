@@ -24,7 +24,6 @@
 <body>
     <div class="container">
         <div class="wrapper">
-           <!-- Вывод статей -->
           <div class="col-md-12">
             <div class="article">
                 <article id="article-{{ article.id }}">
@@ -33,12 +32,10 @@
                     <img class="images" src="{{ article.image_url }}" alt="{{ article.title }}">
                 </article>
                 <div class="article-comment">
-                <!-- Форма для добавления нового комментария -->
                      <form action="{{ url_for('add_comment', article_id=article.id) }}" method="post">
                         <textarea name="content" rows="4" cols="50"></textarea>
                         <button type="submit" class="submit">Добавить комментарий</button>
                      </form>
-                    <!-- Вывод комментариев для данной статьи -->
                     {% for comment, user in comments %}
                         {% if comment.article_id == article.id %}
                              <li class="comment">

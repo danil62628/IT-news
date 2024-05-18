@@ -1,5 +1,4 @@
 /* Стили для формы регистрации / авторизации */
-
 *{
   font-family: 'Poppins', sans-serif;}
 
@@ -20,8 +19,8 @@ body{
   min-height: 90vh;
   }
 .container{
-  width: 80%; /* Изменяем ширину контейнера на 80% от родительского элемента */
-  max-width: 500px; /* Ограничиваем максимальную ширину контейнера для лучшей адаптивности */
+  width: 80%; 
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   padding: 0 15px 0 15px;
@@ -50,9 +49,9 @@ header{
 }
 .input-field input[type="text"]:focus,
 .input-field input[type="password"]:focus {
-  border-color: #3498db; /* Изменяем цвет рамки при фокусировке */
-  box-shadow: 0 0 5px #3498db; /* Добавляем тень для подсветки */
-  outline: none; /* Убираем стандартное выделение */
+  border-color: #3498db; 
+  box-shadow: 0 0 5px #3498db; 
+  outline: none; 
 }
 
 
@@ -101,7 +100,7 @@ header{
 
 .icon {
        width: 20%;
-       margin: 0 auto; /* Центрируем иконку по горизонтали */
+       margin: 0 auto; 
   }
 
   /* Сообщения flash */

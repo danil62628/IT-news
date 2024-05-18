@@ -53,25 +53,23 @@ class Comment(db.Model):
 @app.route('/')
 def index():
     if 'user_id' not in session:
-        return redirect('/login')  # Перенаправляем на страницу авторизации, если пользователь не авторизован
+        return redirect('/login') 
     else:
-        articles = Article.query.all()
-        comments = db.session.query(Comment, User).join(User).all()    # Получаем все комментарии с информацией о пользователе
-        return render_template('index.html', articles=articles, comments=comments)
+        articles = Article.query.all() 
+        return render_template('index.html', articles=articles)
 
 
 # Cтатьи
-
 def get_article(article_id):
     article = db.session.query(Article).get(article_id)
     return article
 @app.route("/article/<int:article_id>")
 def article(article_id):
     if 'user_id' not in session:
-        return redirect('/login')  # Перенаправляем на страницу авторизации, если пользователь не авторизован
+        return redirect('/login') 
     else:
-        article = get_article(article_id)  # Получение статьи по ID
-        comments = db.session.query(Comment, User).join(User).all()  # Получение комментариев для данной статьи
+        article = get_article(article_id) 
+        comments = db.session.query(Comment, User).join(User).all() 
         return render_template("article.html", article=article, comments=comments)
 
 
@@ -81,41 +79,28 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        
-        # Проверка, заполнены ли все поля
         if not username or not password:
             flash('Пожалуйста, заполните все поля', 'error')
             return redirect('/register')
-        # Проверка длины логина и пароля
         if len(username) < 4 or len(username) > 20:
             flash('Логин должен содержать от 4 до 20 символов', 'error')
             return redirect('/register')
-
         if len(password) < 4 or len(password) > 20:
             flash('Пароль должен содержать от 4 до 20 символов', 'error')
             return redirect('/register')
-
-        # Проверка на наличие пробелов в логине и пароле
         if ' ' in username or ' ' in password:
             flash('Логин и пароль не должны содержать пробелы', 'error')
             return redirect('/register')
-        # Проверка, не зарегистрирован ли уже такой пользователь
         user = User.query.filter_by(username=username).first()
         if user:
             flash('Такой пользователь уже зарегистрирован', 'error')
             return redirect('/register')
-        
-        
-        # Создание нового пользователя и сохранение его в базе данных
         new_user = User(username=username, password=generate_password_hash(password))
         db.session.add(new_user)
         db.session.commit()
         session['user_id'] = new_user.id
-
-        
         flash('Вы успешно зарегистрированы', 'success')
         return redirect('/login')
-    
     return render_template('register.html')
 
 # Авторизация
@@ -124,16 +109,12 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-    
-        # Поиск пользователя в базе данных
         user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
             session['username'] = username
             session['user_id'] = user.id
-            session.permanent = True
             flash('Вы успешно вошли', 'success')
 
-            # Очистка flash-сообщений, только если успешный вход
             flash_messages = list(get_flashed_messages())
             flash_messages.clear()
             app.view_functions[request.endpoint].clear_flash = True
@@ -151,25 +132,23 @@ def login():
 @app.route('/article/<int:article_id>/add_comment', methods=['POST'])
 def add_comment(article_id):
        content = request.form.get('content')
-       user_id = session.get('user_id')  # Получаем user_id из сессии
+       user_id = session.get('user_id') 
 
-       if user_id is not None:  # Проверяем, что user_id не равен None
+       if user_id is not None:  
             article = Article.query.get(article_id)
-            user = User.query.get(user_id)  # Получаем объект пользователя по user_id
+            user = User.query.get(user_id)  
       
        if content and article:
            new_comment = Comment(content=content, article_id=article_id, user_id=user_id)
            db.session.add(new_comment)
            db.session.commit()
            db.session.close()
-        
-       #return redirect('/article/<int:article_id>')
+
        return redirect(url_for('article', article_id=article_id))
 
 
-
+    #Выход
 @app.route('/logout')
 def logout():
-     # Удаляем user_id из сессии при выходе
     session.pop('user_id', None)
     return redirect('/login')
