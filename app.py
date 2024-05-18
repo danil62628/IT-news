@@ -23,6 +23,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=True, nullable=False)
+    comments = relationship("Comment", back_populates="user", cascade="all, delete-orphan")
 
 def __init__(self, username, password):
         self.username = username
@@ -40,14 +41,15 @@ class Article(db.Model):
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
     image_url = db.Column(db.String(255))
-    comments = relationship("Comment", back_populates="article")
+    comments = relationship("Comment", back_populates="article", cascade="all, delete-orphan")
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(100), nullable=False)
     article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    article = relationship("Article", back_populates="comments")
+    article = relationship("Article", back_populates="comments",  cascade="all, delete-orphan")
+    user = relationship("User", back_populates="comments",  cascade="all, delete-orphan")
 
 # Главная страница
 @app.route('/')
